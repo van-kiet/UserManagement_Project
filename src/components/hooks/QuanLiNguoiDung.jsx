@@ -7,6 +7,7 @@ export default function QuanLyNguoidung() {
     <div className="w-75 mx-auto mt-5">
       <RegisterForm />
       <UserManagement />
+      <h3>ccc</h3>
     </div>
   );
 }
