@@ -1,4 +1,9 @@
-import { DELETE_USER, SET_SELECTED_USER } from "../types/hookType";
+import {
+  ADD_USER,
+  DELETE_USER,
+  SET_SELECTED_USER,
+  UPDATE_USER,
+} from "../types/hookType";
 
 const DEFAULT_STATE = {
   userList: [
@@ -34,6 +39,27 @@ export const hookReducer = (state = DEFAULT_STATE, action) => {
         ele.id === payload.id ? false : true
       );
       break;
+    case ADD_USER: {
+      const data = [...state.userList];
+
+      data.push({
+        ...payload,
+        id: Date.now(),
+      });
+
+      state.userList = data;
+
+      break;
+    }
+    case UPDATE_USER: {
+      state.selectedUser = null;
+
+      state.userList = state.userList.map((ele) =>
+        ele.id === payload.id ? payload : ele
+      );
+
+      break;
+    }
     default:
       break;
   }

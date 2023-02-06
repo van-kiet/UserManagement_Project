@@ -1,14 +1,21 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteUserAction,
-  updateUserAction,
+  setSelectedUserAction,
 } from "../../store/actions/hookAction";
+import { useState } from "react";
 export default function UserManagement() {
   const hookReducer = useSelector((state) => state.hookReducer);
   const dispatch = useDispatch();
+  const [state, setState] = useState({ keyword: "" });
   const renderUser = () => {
-    return hookReducer.userList.map((ele, idx) => {
+    const filerUser = hookReducer.userList.filter((ele) => {
+      return (
+        ele.fullName.toLowerCase().indexOf(state.keyword.toLowerCase()) !== -1
+      );
+    });
+    return filerUser.map((ele, idx) => {
       return (
         <tr key={idx} className={idx % 2 === 0 ? "bg-light" : undefined}>
           <td>{idx + 1}</td>
@@ -34,7 +41,7 @@ export default function UserManagement() {
   };
 
   const setSelectedUser = (payload) => {
-    dispatch(updateUserAction(payload));
+    dispatch(setSelectedUserAction(payload));
   };
   const deleteUser = (payload) => {
     dispatch(deleteUserAction(payload));
@@ -50,6 +57,7 @@ export default function UserManagement() {
               type="text"
               placeholder="Search by full name..."
               className="form-control"
+              onChange={(event) => setState({ keyword: event.target.value })}
             />
           </div>
         </div>
